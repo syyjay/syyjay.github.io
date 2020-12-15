@@ -1,0 +1,253 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>pods创建远程私有创库 | syyjay的博客</title><meta name="keywords" content="Object-C"><meta name="author" content="syyjay,syyjay@sina.cn"><meta name="copyright" content="syyjay"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="pods创建远程私有创库 注册：pod  trunk  register  ‘you email’  进入邮箱进行验证  查看是否注册成功 pod trun me     创建一个远程仓库，用于存放自己的私有库  在私有库同级目录下，创建spec文件    pod spec create spec-name   配置好spec文件，并将私有库提交到git或者gitee  验证spec  验证本地s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pods创建远程私有创库">
+<meta property="og:url" content="https://syyjay.github.io/2020/12/12/pods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93/index.html">
+<meta property="og:site_name" content="syyjay的博客">
+<meta property="og:description" content="pods创建远程私有创库 注册：pod  trunk  register  ‘you email’  进入邮箱进行验证  查看是否注册成功 pod trun me     创建一个远程仓库，用于存放自己的私有库  在私有库同级目录下，创建spec文件    pod spec create spec-name   配置好spec文件，并将私有库提交到git或者gitee  验证spec  验证本地s">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-12-12T02:27:57.000Z">
+<meta property="article:modified_time" content="2020-12-14T09:28:11.491Z">
+<meta property="article:author" content="syyjay">
+<meta property="article:tag" content="Object-C">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://syyjay.github.io/2020/12/12/pods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.2.0',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-12-14 17:28:11'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {
+  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }
+})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/null" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">6</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">3</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pods%E5%88%9B%E5%BB%BA%E8%BF%9C%E7%A8%8B%E7%A7%81%E6%9C%89%E5%88%9B%E5%BA%93"><span class="toc-number">1.</span> <span class="toc-text">pods创建远程私有创库</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">示例</span></a></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">syyjay的博客</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">pods创建远程私有创库</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-12-12T02:27:57.000Z" title="发表于 2020-12-12 10:27:57">2020-12-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-12-14T09:28:11.491Z" title="更新于 2020-12-14 17:28:11">2020-12-14</time></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="pods创建远程私有创库"><a href="#pods创建远程私有创库" class="headerlink" title="pods创建远程私有创库"></a>pods创建远程私有创库</h1><ol>
+<li><p>注册：pod  trunk  register  ‘you email’</p>
+</li>
+<li><p>进入邮箱进行验证</p>
+</li>
+<li><p>查看是否注册成功</p>
+<p>pod trun me </p>
+</li>
+</ol>
+<ol start="4">
+<li><p>创建一个远程仓库，用于存放自己的私有库</p>
+</li>
+<li><p>在私有库同级目录下，创建spec文件</p>
+</li>
+</ol>
+<ul>
+<li>pod spec create spec-name</li>
+</ul>
+<ol start="6">
+<li><p>配置好spec文件，并将私有库提交到git或者gitee</p>
+</li>
+<li><p>验证spec</p>
+<ul>
+<li><p>验证本地spec</p>
+<p>pod lib lint  spec名称 –allow-warnings</p>
+</li>
+<li><p>远程验证spec</p>
+<p>远程验证时要给库打tag</p>
+<p>pod spec lint sepc 名称 –allow-warnings</p>
+</li>
+</ul>
+</li>
+<li><p>提交spect</p>
+<p> Pod trun push  –allow-warnings</p>
+</li>
+<li><p>提交成功之后就可以使用私有库了</p>
+</li>
+</ol>
+<p>注意：上面的索引库是使用默认的cocoapods的，如果完全私有化，可以直接在git或者gitee上新建一个spec索引库，步骤如下：</p>
+<ol>
+<li>在gitee上新建一个仓库，并添加readme文件</li>
+<li>执行以下命令将自己的私有索引库添加到本地repo<br> pod repo add spec-name 仓库地址<br> 添加成功后可以在./cocoapods/repos/目录下看到官方的specs:master和刚刚加入的specs:spec-name</li>
+<li>cd 进入spec文件所在目录，将索引文件spec加入到刚刚私有索引库中</li>
+<li>在podfile文件中，source 指定为私有索引库的仓库地址，就可以正常使用了</li>
+</ol>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><p>1.2步骤由于已经配置好，这里省略，直接进入3查看是否注册成功<br>成功显示如下：</p>
+<p><img src="/2020/12/12/pods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93/image-20201210140322852.png" alt="image-20201210140322852"></p>
+<ol start="4">
+<li><p>在码云上创建一个spec私有索引库</p>
+<p><img src="/2020/12/12/pods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93/image-20201210141203876.png" alt="image-20201210141203876"></p>
+</li>
+</ol>
+<p>5.将MyPodSpec仓库添加到本地repo</p>
+<p>pod repo add  MyPodsSpec  <a target="_blank" rel="noopener" href="https://gitee.com/subosubo/myPodSpec.git">https://gitee.com/subosubo/myPodSpec.git</a></p>
+<p>添加成功后可以在/.cocoapods/repos/目录下可以看到官方的specs:master和刚刚加入的specs:MyPodsSpec</p>
+<p><img src="/2020/12/12/pods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93/image-20201210141707937.png" alt="image-20201210141707937"></p>
+<p>6.通步骤5创建私有库的仓库</p>
+<p><img src="/2020/12/12/pods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93/image-20201210142015639.png" alt="image-20201210142015639"></p>
+<p>然后clone下来，git clone  <a target="_blank" rel="noopener" href="https://gitee.com/subosubo/my-lib.git,%E7%84%B6%E5%90%8E%E6%B7%BB%E5%8A%A0Test%E6%96%87%E4%BB%B6%EF%BC%8C%E5%B9%B6%E6%8F%90%E4%BA%A4%E5%88%B0%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93">https://gitee.com/subosubo/my-lib.git,然后添加Test文件，并提交到远程仓库</a></p>
+<p><img src="/2020/12/12/pods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93/image-20201210142417775.png" alt="image-20201210142417775"></p>
+<ol start="7">
+<li><p>创建索引文件</p>
+<p>在my-lib目录下创建mylib.spec文件</p>
+<p>pod spec create mylib</p>
+<p>然后编辑mylib.spec 文件</p>
+</li>
+</ol>
+   <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  Be sure to run `pod spec lint mylib.podspec&#x27; to ensure this is a</span></span><br><span class="line"><span class="comment">#  valid spec and to remove all comments including this before submitting the spec.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  To learn more about Podspec attributes see https://guides.cocoapods.org/syntax/podspec.html</span></span><br><span class="line"><span class="comment">#  To see working Podspecs in the CocoaPods repo see https://github.com/CocoaPods/Specs/</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line">Pod::Spec.new <span class="keyword">do</span> <span class="params">|spec|</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ―――  Spec Metadata  ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#  These will help people to find your library, and whilst it</span></span><br><span class="line">  <span class="comment">#  can feel like a chore to fill in it&#x27;s definitely to your advantage. The</span></span><br><span class="line">  <span class="comment">#  summary should be tweet-length, and the description more in depth.</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line"></span><br><span class="line">  spec.name         = <span class="string">&quot;mylib&quot;</span></span><br><span class="line">  spec.version      = <span class="string">&quot;0.0.1&quot;</span></span><br><span class="line">  spec.summary      = <span class="string">&quot;私有库测试&quot;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># This description is used to generate tags and improve search results.</span></span><br><span class="line">  <span class="comment">#   * Think: What does it do? Why did you write it? What is the focus?</span></span><br><span class="line">  <span class="comment">#   * Try to keep it short, snappy and to the point.</span></span><br><span class="line">  <span class="comment">#   * Write the description between the DESC delimiters below.</span></span><br><span class="line">  <span class="comment">#   * Finally, don&#x27;t worry about the indent, CocoaPods strips it!</span></span><br><span class="line">  spec.description  = <span class="string">&quot;pods创建私有库的使用&quot;</span></span><br><span class="line"></span><br><span class="line">  spec.homepage     = <span class="string">&quot;https://gitee.com/subosubo/my-lib.git&quot;</span></span><br><span class="line">  <span class="comment"># spec.screenshots  = &quot;www.example.com/screenshots_1.gif&quot;, &quot;www.example.com/screenshots_2.gif&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ―――  Spec License  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#  Licensing your code is important. See https://choosealicense.com for more info.</span></span><br><span class="line">  <span class="comment">#  CocoaPods will detect a license file if there is a named LICENSE*</span></span><br><span class="line">  <span class="comment">#  Popular ones are &#x27;MIT&#x27;, &#x27;BSD&#x27; and &#x27;Apache License, Version 2.0&#x27;.</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line"></span><br><span class="line">  spec.license      = <span class="string">&quot;MIT (example)&quot;</span></span><br><span class="line">  <span class="comment"># spec.license      = &#123; :type =&gt; &quot;MIT&quot;, :file =&gt; &quot;FILE_LICENSE&quot; &#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ――― Author Metadata  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#  Specify the authors of the library, with email addresses. Email addresses</span></span><br><span class="line">  <span class="comment">#  of the authors are extracted from the SCM log. E.g. $ git log. CocoaPods also</span></span><br><span class="line">  <span class="comment">#  accepts just a name if you&#x27;d rather not provide an email address.</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#  Specify a social_media_url where others can refer to, for example a twitter</span></span><br><span class="line">  <span class="comment">#  profile URL.</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line"></span><br><span class="line">  spec.author             = &#123; <span class="string">&quot;丁次&quot;</span> =&gt; <span class="string">&quot;syyjay@sina.cn&quot;</span> &#125;</span><br><span class="line">  <span class="comment"># Or just: spec.author    = &quot;丁次&quot;</span></span><br><span class="line">  <span class="comment"># spec.authors            = &#123; &quot;丁次&quot; =&gt; &quot;syyjay<span class="doctag">@sina</span>.cn&quot; &#125;</span></span><br><span class="line">  <span class="comment"># spec.social_media_url   = &quot;https://twitter.com/丁次&quot;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#  If this Pod runs only on iOS or OS X, then specify the platform and</span></span><br><span class="line">  <span class="comment">#  the deployment target. You can optionally include the target after the platform.</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># spec.platform     = :ios</span></span><br><span class="line">  <span class="comment"># spec.platform     = :ios, &quot;5.0&quot;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">#  When using multiple platforms</span></span><br><span class="line">  <span class="comment"># spec.ios.deployment_target = &quot;5.0&quot;</span></span><br><span class="line">  <span class="comment"># spec.osx.deployment_target = &quot;10.7&quot;</span></span><br><span class="line">  <span class="comment"># spec.watchos.deployment_target = &quot;2.0&quot;</span></span><br><span class="line">  <span class="comment"># spec.tvos.deployment_target = &quot;9.0&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#  Specify the location from where the source should be retrieved.</span></span><br><span class="line">  <span class="comment">#  Supports git, hg, bzr, svn and HTTP.</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line"></span><br><span class="line">  spec.source       = &#123; <span class="symbol">:git</span> =&gt; <span class="string">&quot;https://gitee.com/subosubo/my-lib.git&quot;</span>, <span class="symbol">:tag</span> =&gt; <span class="string">&quot;<span class="subst">#&#123;spec.version&#125;</span>&quot;</span> &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#  CocoaPods is smart about how it includes source code. For source files</span></span><br><span class="line">  <span class="comment">#  giving a folder will include any swift, h, m, mm, c &amp; cpp files.</span></span><br><span class="line">  <span class="comment">#  For header files it will include any header in the folder.</span></span><br><span class="line">  <span class="comment">#  Not including the public_header_files will make all headers public.</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line"></span><br><span class="line">  spec.source_files  = <span class="string">&quot;mylib&quot;</span>, <span class="string">&quot;mylib/*.&#123;h,m&#125;&quot;</span></span><br><span class="line">  <span class="comment"># spec.exclude_files = &quot;Classes/Exclude&quot;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># spec.public_header_files = &quot;Classes/**/*.h&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#  A list of resources included with the Pod. These are copied into the</span></span><br><span class="line">  <span class="comment">#  target bundle with a build phase script. Anything else will be cleaned.</span></span><br><span class="line">  <span class="comment">#  You can preserve files from being cleaned, please don&#x27;t preserve</span></span><br><span class="line">  <span class="comment">#  non-essential files like tests, examples and documentation.</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># spec.resource  = &quot;icon.png&quot;</span></span><br><span class="line">  <span class="comment"># spec.resources = &quot;Resources/*.png&quot;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># spec.preserve_paths = &quot;FilesToSave&quot;, &quot;MoreFilesToSave&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#  Link your library with frameworks, or libraries. Libraries do not include</span></span><br><span class="line">  <span class="comment">#  the lib prefix of their name.</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># spec.framework  = &quot;SomeFramework&quot;</span></span><br><span class="line">  <span class="comment"># spec.frameworks = &quot;SomeFramework&quot;, &quot;AnotherFramework&quot;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># spec.library   = &quot;iconv&quot;</span></span><br><span class="line">  <span class="comment"># spec.libraries = &quot;iconv&quot;, &quot;xml2&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment"># ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#  If your library depends on compiler flags you can set them in the xcconfig hash</span></span><br><span class="line">  <span class="comment">#  where they will only apply to your library. If you depend on other Podspecs</span></span><br><span class="line">  <span class="comment">#  you can include multiple dependencies to ensure it works.</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># spec.requires_arc = true</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># spec.xcconfig = &#123; &quot;HEADER_SEARCH_PATHS&quot; =&gt; &quot;$(SDKROOT)/usr/include/libxml2&quot; &#125;</span></span><br><span class="line">  <span class="comment"># spec.dependency &quot;JSONKit&quot;, &quot;~&gt; 1.4&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>   然后验证本地podspec文件</p>
+   <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod lib lint mylib.podspec --allow-warnings</span><br></pre></td></tr></table></figure>
+
+<p>   <img src="/2020/12/12/pods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93/image-20201210143833202.png" alt="image-20201210143833202"></p>
+<p>   代表验证成功了</p>
+<ol start="8">
+<li><p>给远程仓库MyLib打标签，对mylib.podspec进行远程验证</p>
+<p>git tag -a ‘0.0.1’ -m ‘0.0.1初始化版本’</p>
+<p>git push –tags</p>
+<p>远程验证 mylib.podspec:</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod spec  lint mylib.podspec --allow-warnings</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/12/12/pods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93/image-20201210144300071.png" alt="image-20201210144300071"></p>
+<p>验证成功</p>
+</li>
+<li><p>将mylib.pods.spec 文件添加到MyPodsSpec索引库中</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod  repo  push  MyPodsSpec  mylib.podspec  --allow-warnings</span><br></pre></td></tr></table></figure>
+
+<p>添加成功提示如下：</p>
+<p><img src="/2020/12/12/pods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93/image-20201210144751628.png" alt="image-20201210144751628"></p>
+<p>添加成功后可以在/.cocoapods/repos/目录下可以看到MyPodsSpec目录下有了mylib的索引</p>
+<p><img src="/2020/12/12/pods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93/image-20201210144949147.png" alt="image-20201210144949147"></p>
+</li>
+<li><p>创建工程验证并使用</p>
+<p>新建PodTest工程，并在项目根目录下执行pod init 命令创建Podfile文件，并编辑Podfile文件</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Uncomment the next line to define a global platform for your project</span></span><br><span class="line">platform <span class="symbol">:ios</span>, <span class="string">&#x27;9.0&#x27;</span></span><br><span class="line">source <span class="string">&#x27;https://gitee.com/subosubo/myPodSpec.git&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">target <span class="string">&#x27;PodTest&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  <span class="comment"># Comment the next line if you don&#x27;t want to use dynamic frameworks</span></span><br><span class="line">  use_frameworks!</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Pods for PodTest</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>执行pod install 命令,成功之后打开工程，可以看到我们的私有库以及pod到项目中了</p>
+</li>
+</ol>
+<p><img src="/2020/12/12/pods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93/image-20201210145734519.png" alt="image-20201210145734519"></p>
+<ol start="11">
+<li><p>如果使用cocoapods官方的Specs:master作为索引库，则不用自己新建一个私有索引库(MyPodsSpec)</p>
+<p>第8步之后，mylib.podspec所在文件的目录下，执行pod trunk push –allow-warnings</p>
+<p>成功即可</p>
+<p><img src="/2020/12/12/pods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93/image-20201210150911740.png" alt="image-20201210150911740"></p>
+<p>这里由于刚刚以及创建了同名的库，因此报name以及存在</p>
+</li>
+</ol>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:syyjay@sina.cn">syyjay</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://syyjay.github.io/2020/12/12/pods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93/">https://syyjay.github.io/2020/12/12/pods%E5%88%9B%E5%BB%BA%E7%A7%81%E6%9C%89%E5%BA%93/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://syyjay.github.io" target="_blank">syyjay的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Object-C/">Object-C</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/12/14/OCAndSwift%E6%B7%B7%E7%BC%96/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">OC和Swift混编</div></div></a></div><div class="next-post pull-right"><a href="/2020/11/02/JdbcTemplate%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">JdbcTemplate基本使用</div></div></a></div></nav></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By syyjay</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>
